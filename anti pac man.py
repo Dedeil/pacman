@@ -35,9 +35,9 @@ class jeu():
             for chiffre in ligne:
                 if chiffre=="0":
                     self.__carte.create_rectangle(x*self.__cote,y*self.__cote,(1+x)*self.__cote,(1+y)*self.__cote,fill="blue2")
+                    self.__coordMurs.append((x*self.__cote,y*self.__cote))
                 elif chiffre=="1":
                     self.__carte.create_rectangle(x*self.__cote,y*self.__cote,(1+x)*self.__cote,(1+y)*self.__cote,fill="deep sky blue")
-                    self.__coordMurs.append((x*self.__cote,y*self.__cote))
                 x+=1
             y+=1
             x=0
@@ -46,33 +46,21 @@ class jeu():
     def __north(self,poop):
         yTmp=self.__y-self.__speed
         for i in self.__coordMurs:
-            if i[0]<=self.__x and self.__x+self.__cote<=i[0]+self.__cote and i[1]<=yTmp<i[1]+self.__cote:
+            if yTmp-self.__cote>=i[1] and i[0]+self.__cote<self.__x and self.__x+self.__cote<i[0]:
                 self.__y-=self.__speed
                 self.__carte.coords(self.__pacman,self.__x+1,self.__y+1,self.__x+self.__cote-1,self.__y+self.__cote-1)
                 break
 
     def __west(self,poop):
-        xTmp=self.__x-self.__speed
-        for i in self.__coordMurs:
-            if i[0]<=xTmp<i[0]+self.__cote and i[1]<=self.__y and self.__y+self.__cote<=i[1]+self.__cote:
-                self.__x-=self.__speed
-                self.__carte.coords(self.__pacman,self.__x+1,self.__y+1,self.__x+self.__cote-1,self.__y+self.__cote-1)
-                break
+        self.__x-=self.__speed
+        self.__carte.coords(self.__pacman,self.__x+1,self.__y+1,self.__x+self.__cote-1,self.__y+self.__cote-1)
 
     def __south(self,poop):
-        yTmp=self.__y+self.__speed
-        for i in self.__coordMurs:
-            if i[0]<=self.__x and self.__x+self.__cote<=i[0]+self.__cote and i[1]-self.__cote<=yTmp<=i[1]:
-                self.__y+=self.__speed
-                self.__carte.coords(self.__pacman,self.__x+1,self.__y+1,self.__x+self.__cote-1,self.__y+self.__cote-1)
-                break
+        self.__y+=self.__speed
+        self.__carte.coords(self.__pacman,self.__x+1,self.__y+1,self.__x+self.__cote-1,self.__y+self.__cote-1)
 
     def __east(self,poop):
-        xTmp=self.__x+self.__speed+self.__cote
-        for i in self.__coordMurs:
-            if i[0]<xTmp<=i[0]+self.__cote and i[1]<=self.__y and self.__y+self.__cote<=i[1]+self.__cote:
-                self.__x+=self.__speed
-                self.__carte.coords(self.__pacman,self.__x+1,self.__y+1,self.__x+self.__cote-1,self.__y+self.__cote-1)
-                break
-        
+        self.__x+=self.__speed
+        self.__carte.coords(self.__pacman,self.__x+1,self.__y+1,self.__x+self.__cote-1,self.__y+self.__cote-1)
+
 main=jeu()
